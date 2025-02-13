@@ -1,30 +1,35 @@
-let tasks = []; 
+let tasks = [];
 
 function addTask() {
-    let taskInput = document.getElementById('taskInput').value;
+    let taskInput = document.getElementById("taskInput");
+    let taskText = taskInput.value.trim();
 
-    if (taskInput.trim() === '') {
+    if (taskText === "") {
+        alert("Por favor, digite uma tarefa!");
         return;
     }
 
-    tasks.push(taskInput);
-    document.getElementById('taskInput').value = '';
-    renderTasks();
+    tasks.push(taskText);
+    taskInput.value = ""; 
+
+    updateTaskList(); 
 }
 
-function renderTasks() {
-    let taskList = document.getElementById('taskList');
-    tasks.forEach(task => {
-        let taskElement = document.createElement('div');
-        taskElement.classList.add('task');
-        taskElement.innerHTML = `<p>${task}</p><button>X</button>`;
-        taskList.appendChild(taskElement);
+function removeTask(index) {
+    tasks.splice(index, 1);
+    updateTaskList(); 
+}
+
+function updateTaskList() {
+    let taskList = document.getElementById("taskList");
+    taskList.innerHTML = ""; 
+    tasks.forEach((task, index) => {
+        let taskDiv = document.createElement("div");
+        taskDiv.className = "task";
+        taskDiv.innerHTML = `
+            <span>${task}</span>
+            <button onclick="removeTask(${index})"><img class="btn-add" src="./imgs/botao-de-menos.png" alt=""></button>
+        `;
+        taskList.appendChild(taskDiv);
     });
 }
-
-function removeTask(task) {
-    tasks = tasks.filter(t => t !== task);
-    renderTasks();
-}
-
-renderTasks();
